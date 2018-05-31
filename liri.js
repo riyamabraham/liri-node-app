@@ -37,7 +37,20 @@ function tweets() {
 
     client.get('statuses/user_timeline', params, function (error, tweets, response) {
         if (!error) {
-            console.log(tweets);
+           // console.log(tweets);
+            var data = []; //empty array to hold data
+            for (var i = 0; i < tweets.length; i++) {
+      
+                data.push({
+                    'created at: ': tweets[i].created_at,
+                    'Tweets: ': tweets[i].text,
+                });
+            }
+            console.log(data);
+            fs.appendFile('log.txt', data +'\n', (err) => {
+                if (err) throw err;
+                console.log('***The data added******');
+            });
         }
     });
 }
@@ -61,7 +74,7 @@ function spotify(song = process.argv[3]) {
             for (var i = 0; i < songs.length; i++) {
 
                 songsData.push({
-                    'song name: ': songs[i].name,
+                    'song name: ': songs[i].artists.map(getArtistNames),
                     'preview song: ': songs[i].preview_url,
                     'album: ': songs[i].album.name,
                     'artist(s)': songs[i].artists
@@ -88,7 +101,7 @@ function spotify(song = process.argv[3]) {
             for (var i = 0; i < songs.length; i++) {
 
                 songsData.push({
-                    'song name: ': songs[i].name,
+                    'song name: ': JSON.stringify(songs[i].artists.map(getArtistNames)),
                     'preview song: ': songs[i].preview_url,
                     'album: ': songs[i].album.name,
                     'artist(s)': songs[i].artists
@@ -103,6 +116,10 @@ function spotify(song = process.argv[3]) {
         });
     }
 }
+
+var getArtistNames = function (artist) {
+    return artist.name;
+};
 
 
 

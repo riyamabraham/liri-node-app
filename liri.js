@@ -47,7 +47,8 @@ function tweets() {
                 });
             }
             console.log(data);
-            fs.appendFile('log.txt', data +'\n', (err) => {
+            fs.appendFile('log.txt','tweets'+'\n');
+            fs.appendFile('log.txt',JSON.stringify(data) +'\n', (err) => {
                 if (err) throw err;
                 console.log('***The data added******');
             });
@@ -74,7 +75,7 @@ function spotify(song = process.argv[3]) {
             for (var i = 0; i < songs.length; i++) {
 
                 songsData.push({
-                    'song name: ': songs[i].artists.map(getArtistNames),
+                    'song name: ': JSON.stringify(songs[i].artists.map(getArtistNames)),
                     'preview song: ': songs[i].preview_url,
                     'album: ': songs[i].album.name,
                     'artist(s)': songs[i].artists
@@ -82,6 +83,8 @@ function spotify(song = process.argv[3]) {
             }
             console.log("total number of songs: " + songs.length);
             console.log(songsData);
+            fs.appendFile('log.txt','spotify-this-song'+'\n');
+            fs.appendFile('log.txt',song+'\n');
             fs.appendFile('log.txt', JSON.stringify(songsData) +'\n-----------------\n', (err) => {
                 if (err) throw err;
                 console.log('The "data to append" was appended to file!');
@@ -109,6 +112,8 @@ function spotify(song = process.argv[3]) {
             }
             console.log("total number of songs: " + songs.length);
             console.log(songsData);
+            fs.appendFile('log.txt','spotify-this-song'+'\n');
+            fs.appendFile('log.txt','The Sign'+'\n');
            fs.appendFile('log.txt', JSON.stringify(songsData) +'\n-----------------\n', (err) => {
             if (err) throw err;
             console.log('The "data to append" was appended to file!');

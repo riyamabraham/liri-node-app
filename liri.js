@@ -32,9 +32,9 @@ function tweets() {
     var params = {
         screen_name: 'Riya'
     } && {
-        count: 20
-    };
-    
+            count: 20
+        };
+
     client.get('statuses/user_timeline', params, function (error, tweets, response) {
         if (!error) {
             console.log(tweets);
@@ -43,19 +43,36 @@ function tweets() {
 }
 
 
-function spotify(song = process.argv[3]){
+function spotify(song = process.argv[3]) {
     var spotify = new Spotify(keys.spotify);
     if (song != null) {
-        spotify.search({ type: 'track', query: song }, function(err, data) {
-            if ( err ) {
+        spotify.search({ type: 'track', query: song }, function (err, data) {
+            if (err) {
                 console.log('Error occurred: ' + err);
                 return;
             }
-         
+
             // Do something with 'data'
             console.log("hi");
-            console.log(data);
+            //console.log(data);
+            var songs = data.tracks.items;
+            //console.log(songs);
+            var songsData = [];
+            for (var i = 0; i < songs.length; i++) {
 
+                songsData.push({
+                    'song name: ': songs[i].name,
+                    'preview song: ': songs[i].preview_url,
+                    'album: ': songs[i].album.name,
+                    'artist(s)': songs[i].artists
+                });
+            }
+            console.log("total number of songs: " + songs.length);
+            console.log(songsData);
+            fs.appendFile('log.txt', JSON.stringify(songsData) +'\n-----------------\n', (err) => {
+                if (err) throw err;
+                console.log('The "data to append" was appended to file!');
+              });
         });
     }
 
@@ -65,7 +82,24 @@ function spotify(song = process.argv[3]){
                 return console.log('Error occurred: ' + err);
             }
 
-            console.log(data);
+            var songs = data.tracks.items;
+            //console.log(songs);
+            var songsData = [];
+            for (var i = 0; i < songs.length; i++) {
+
+                songsData.push({
+                    'song name: ': songs[i].name,
+                    'preview song: ': songs[i].preview_url,
+                    'album: ': songs[i].album.name,
+                    'artist(s)': songs[i].artists
+                });
+            }
+            console.log("total number of songs: " + songs.length);
+            console.log(songsData);
+           fs.appendFile('log.txt', JSON.stringify(songsData) +'\n-----------------\n', (err) => {
+            if (err) throw err;
+            console.log('The "data to append" was appended to file!');
+          });
         });
     }
 }
@@ -115,18 +149,18 @@ function movies() {
 
 
 function reflect() {
-   fs.readFile("random.txt","utf-8",function(err,data){
-        if(err){
+    fs.readFile("random.txt", "utf-8", function (err, data) {
+        if (err) {
             console.log(err);
         }
         data = data.split(",");
-        for(var i=0;i<data.length;i++){
+        for (var i = 0; i < data.length; i++) {
             console.log(data[i]);
         }
         var song = data[1];
         console.log(song);
         spotify(song);
-   });
+    });
 }
 
 

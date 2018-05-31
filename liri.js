@@ -28,7 +28,13 @@ switch (action) {
 
 function tweets() {
     var client = new Twitter(keys.twitter);
-    var params = { screen_name: 'Riya81060624' };
+    //var params = { screen_name: 'Riya81060624' };
+    var params = {
+        screen_name: 'Riya'
+    } && {
+        count: 20
+    };
+    
     client.get('statuses/user_timeline', params, function (error, tweets, response) {
         if (!error) {
             console.log(tweets);
@@ -40,12 +46,16 @@ function tweets() {
 function spotify(song = process.argv[3]){
     var spotify = new Spotify(keys.spotify);
     if (song != null) {
-        spotify.search({ type: 'track', query: song }, function (err, data) {
-            if (err) {
-                return console.log('Error occurred: ' + err);
+        spotify.search({ type: 'track', query: song }, function(err, data) {
+            if ( err ) {
+                console.log('Error occurred: ' + err);
+                return;
             }
-
+         
+            // Do something with 'data'
+            console.log("hi");
             console.log(data);
+
         });
     }
 
